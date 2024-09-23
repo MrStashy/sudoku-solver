@@ -20,11 +20,15 @@ function App() {
       return this.grid[row - 1][column - 1]
     }
 
-    public getCol(col: number): SudokuRowColQuad {
+    public getrow(number: number): SudokuRowColQuad {
+      return this.grid[number-1]
+    }
+
+    public getCol(number: number): SudokuRowColQuad {
       const colArr: SudokuCell[] = []
       
-      for (let i = 0; i <= this.grid.length; i++) {
-       colArr.push(this.grid[i][col - 1]) 
+      for(let i = 0; i < this.grid.length; i++) {
+        colArr.push(this.grid[i][number-1])
       }
 
       return colArr
@@ -34,15 +38,13 @@ function App() {
       for (let i = 0; i < this.grid.length; i++) {
         const currentRow = this.grid[i]
         for (let j = 0; j < currentRow.length; j++) {
-          currentRow[j] = j
+          currentRow[j] = (i*10) + (j-i+1)
         }
       }
-      console.log(this.grid)
     }
   }
 
   const testGrid = new SudokuGrid()
-  testGrid.populateGridWithNumbers()
 
 
   return (
