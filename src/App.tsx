@@ -1,7 +1,6 @@
 import SudokoGridLayout from "./SudokuGridLayout";
 import { SudokuCell, SudokuGridArray, SudokuRowColQuad} from "./types"
 
-
 function App() {
   
   class SudokuGrid {
@@ -30,14 +29,25 @@ function App() {
 
       return colArr
     }
+
+    public populateGridWithNumbers() {
+      for (let i = 0; i < this.grid.length; i++) {
+        const currentRow = this.grid[i]
+        for (let j = 0; j < currentRow.length; j++) {
+          currentRow[j] = j
+        }
+      }
+      console.log(this.grid)
+    }
   }
 
   const testGrid = new SudokuGrid()
+  testGrid.populateGridWithNumbers()
 
 
   return (
     <div className="text-red-500">
-      <SudokoGridLayout sudokuGrid={testGrid}/>
+      <SudokoGridLayout sudokuGrid={testGrid.getGrid()}/>
     </div>
   )
 }
