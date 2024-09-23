@@ -1,12 +1,9 @@
+import SudokoGridLayout from "./SudokuGridLayout";
+import { SudokuCell, SudokuGridArray, SudokuRowColQuad} from "./types"
 
-
-type SudokuCell = number | null;
-type SudokuGridArray = SudokuCell[][];
-type SudokuRowColQuad = SudokuCell[]
 
 function App() {
   
-
   class SudokuGrid {
     private grid: SudokuGridArray;
     
@@ -35,12 +32,17 @@ function App() {
     }
   }
 
+  const testGrid = new SudokuGrid()
+
 
   return (
     <div className="text-red-500">
-    Sudoku Solver
+      <SudokoGridLayout sudokuGrid={testGrid}/>
     </div>
   )
 }
+
+
+
 
 export default App
