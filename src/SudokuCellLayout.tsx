@@ -4,11 +4,13 @@ interface SudokuCellLayoutProps {
     number: SudokuCell;
     rowIndex: number;
     colIndex: number;
+    handleCellChange: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function SudokuCellLayout({number, rowIndex, colIndex}: SudokuCellLayoutProps) {
-    console.log(rowIndex)
+export default function SudokuCellLayout({number, rowIndex, colIndex, handleCellChange}: SudokuCellLayoutProps) {
+
+
     return (
-        <p id={`${rowIndex}-${colIndex}`} className="border h-14 w-14 grid place-items-center">{number}</p>
+        <input id={`${rowIndex}-${colIndex}`} className="border h-14 w-14 grid place-items-center" onChange={handleCellChange} value={number}/>
     )
 }
