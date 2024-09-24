@@ -8,13 +8,15 @@ interface SudokuGridLayoutProps {
 export default function SudokuGridLayout({
   sudokuGrid,
 }: SudokuGridLayoutProps) {
+
+  console.log(sudokuGrid)
   return (
     <div className="flex flex-col">
-    {sudokuGrid.map((row, index) => {
-        return (
-            <SudokuRowLayout key={index} row={row} />
-        )
-    })}
-    </div>
+    {sudokuGrid.map((row, rowIndex) => {
+      return (<SudokuRowLayout row={row} rowIndex={rowIndex+1}/>)
+    }
+        
+    )}
+  </div>
   );
 }
