@@ -34,33 +34,37 @@ function App() {
   }
 
   function getQuad(number: number): SudokuRowColQuad {
-        const startRow = Math.floor((number - 1) / 3) * 3;
-        const startCol = ((number - 1) % 3) * 3;
-        const result: SudokuCell[] = [];
-    
-        for (let i = 0; i < 3; i++) {
-          for (let j = 0; j < 3; j++) {
-            result.push(grid[startRow + i][startCol + j]);
-          }
-        }
-        return result;
-      }
+    const startRow = Math.floor((number - 1) / 3) * 3;
+    const startCol = ((number - 1) % 3) * 3;
+    const result: SudokuCell[] = [];
 
-  function checkDuplicates(area: SudokuRowColQuad){
-    const valuesAlreadySeen = []
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        result.push(grid[startRow + i][startCol + j]);
+      }
+    }
+    return result;
+  }
+
+  function checkDuplicates(area: SudokuRowColQuad) {
+    const valuesAlreadySeen = [];
 
     for (let i = 0; i < area.length; i++) {
-      const value: SudokuCell = area[i]
-      if (valuesAlreadySeen.indexOf(value) !== -1) {
-        return true
+      const value: SudokuCell = area[i];
+      if (value === "") {
+        continue;
       }
-      valuesAlreadySeen.push(value)
+      if (valuesAlreadySeen.indexOf(value) !== -1) {
+        return true;
+      }
+      valuesAlreadySeen.push(value);
     }
-    return false
+    return false;
   }
 
   function handleCheckGrid() {
-    console.log(checkDuplicates(getQuad(1)))
+    const quad: SudokuRowColQuad = getQuad(1);
+    console.log(checkDuplicates(quad));
   }
 
   return (
