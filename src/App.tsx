@@ -8,6 +8,7 @@ function App() {
       .fill(null)
       .map(() => Array(9).fill(""))
   );
+  const [invalidGrid, setInvalidGrid] = useState<boolean>(false);
 
   function handleCellChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newGrid: SudokuGridArray = grid.map((row) => [...row]);
@@ -63,8 +64,20 @@ function App() {
   }
 
   function handleCheckGrid() {
-    const quad: SudokuRowColQuad = getQuad(1);
-    console.log(checkDuplicates(quad));
+    setInvalidGrid(false)
+    for (let i = 1; i <= 9; i++) {
+      const quad: SudokuRowColQuad = getQuad(i);
+      const row: SudokuRowColQuad = getRow(i);
+      const col: SudokuRowColQuad = getCol(i);
+
+      if (
+        checkDuplicates(row) ||
+        checkDuplicates(col) ||
+        checkDuplicates(quad)
+      ) {
+        setInvalidGrid(true);
+      }
+    }
   }
 
   return (
@@ -76,6 +89,7 @@ function App() {
         />
       </div>
       <button onClick={handleCheckGrid}>Check Grid</button>
+      {invalidGrid && <p className="text-red-500">This Grid Has An Error</p>}
     </>
   );
 }
