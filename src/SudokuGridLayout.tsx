@@ -14,7 +14,7 @@ export default function SudokuGridLayout({
   return (
     <div className="flex flex-col">
     {sudokuGrid.map((row, rowIndex) => {
-      return (<SudokuRowLayout handleCellChange={handleCellChange} row={row} rowIndex={rowIndex+1} />)
+      return (<SudokuRowLayout key={rowIndex} handleCellChange={handleCellChange} row={row} rowIndex={rowIndex+1} />)
     }
         
     )}

@@ -1,6 +1,6 @@
 import SudokoGridLayout from "./SudokuGridLayout";
-import { SudokuGridArray } from "./types";
-import { useState, useEffect } from "react";
+import { SudokuGridArray, SudokuRowColQuad, SudokuCell } from "./types";
+import { useState } from "react";
 
 function App() {
   const [grid, setGrid] = useState<SudokuGridArray>(
@@ -9,47 +9,84 @@ function App() {
       .map(() => Array(9).fill(""))
   );
 
-  function populateGridWithNumbers() {
-    const newGrid: SudokuGridArray = grid.map((row) => [...row]);
-    for (let i = 0; i < newGrid.length; i++) {
-      for (let j = 0; j < newGrid[i].length; j++) {
-        newGrid[i][j] = (i * 10 + (j - i + 1)).toString();
-      }
-    }
-    setGrid(newGrid);
-  }
-
   function handleCellChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newGrid: SudokuGridArray = grid.map((row) => [...row]);
     const { id, value } = e.target;
     const col = Number(id[0]) - 1;
     const row = Number(id[2]) - 1;
 
-    if (
-      Number(value) === 0 ||
-      value.toString().length > 1 ||
-      isNaN(Number(value))
-    ) {
-      return;
+    if (value === "" || /^[1-9]?$/.test(value)) {
+      newGrid[col][row] = value === "" ? "" : value;
+      setGrid(newGrid);
     }
-
-    newGrid[col][row] = value;
-
-    setGrid(newGrid);
   }
 
-  // useEffect(() => {
-  //   populateGridWithNumbers()
-  // }, [])
+  function getRow(number: number): SudokuRowColQuad {
+    return grid[number - 1];
+  }
+
+  function getCol(number: number): SudokuRowColQuad {
+    const colArr: SudokuCell[] = [];
+    for (let i = 0; i < grid.length; i++) {
+      colArr.push(grid[i][number - 1]);
+    }
+    return colArr;
+  }
+
+  function getQuad(number: number): SudokuRowColQuad {
+        const startRow = Math.floor((number - 1) / 3) * 3;
+        const startCol = ((number - 1) % 3) * 3;
+        const result: SudokuCell[] = [];
+    
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            result.push(grid[startRow + i][startCol + j]);
+          }
+        }
+        return result;
+      }
+
+  function checkDuplicates(area: SudokuRowColQuad){
+    const valuesAlreadySeen = []
+
+    for (let i = 0; i < area.length; i++) {
+      const value: SudokuCell = area[i]
+      if (valuesAlreadySeen.indexOf(value) !== -1) {
+        return true
+      }
+      valuesAlreadySeen.push(value)
+    }
+    return false
+  }
+
+  function handleCheckGrid() {
+    console.log(checkDuplicates(getQuad(1)))
+  }
 
   return (
-    <div className="text-red-500">
-      <SudokoGridLayout sudokuGrid={grid} handleCellChange={handleCellChange} />
-    </div>
+    <>
+      <div className="text-red-500">
+        <SudokoGridLayout
+          sudokuGrid={grid}
+          handleCellChange={handleCellChange}
+        />
+      </div>
+      <button onClick={handleCheckGrid}>Check Grid</button>
+    </>
   );
 }
 
 export default App;
+
+// function populateGridWithNumbers() {
+//   const newGrid: SudokuGridArray = grid.map((row) => [...row]);
+//   for (let i = 0; i < newGrid.length; i++) {
+//     for (let j = 0; j < newGrid[i].length; j++) {
+//       newGrid[i][j] = (i * 10 + (j - i + 1)).toString();
+//     }
+//   }
+//   setGrid(newGrid);
+// }
 
 // class SudokuGrid {
 //   private grid: SudokuGridArray;
