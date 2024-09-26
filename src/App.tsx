@@ -22,22 +22,22 @@ function App() {
     }
   }
 
-  function getRow(number: number): SudokuRowColQuad {
-    return grid[number - 1];
+  function getRow(grid: SudokuGridArray, number: number): SudokuRowColQuad {
+    return grid[number];
   }
 
-  function getCol(number: number): SudokuRowColQuad {
+  function getCol(grid: SudokuGridArray, number: number): SudokuRowColQuad {
     const colArr: SudokuCell[] = [];
     for (let i = 0; i < grid.length; i++) {
-      colArr.push(grid[i][number - 1]);
+      colArr.push(grid[i][number]);
     }
     return colArr;
   }
 
-  function getQuad(number: number): SudokuRowColQuad {
-    const startRow = Math.floor((number - 1) / 3) * 3;
-    const startCol = ((number - 1) % 3) * 3;
-    const result: SudokuCell[] = [];
+  function getQuad(grid: SudokuGridArray, number: number): SudokuRowColQuad {
+    const startRow = Math.floor(number / 3) * 3; 
+    const startCol = (number % 3) * 3;   
+    const result: SudokuRowColQuad = [];
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -47,7 +47,7 @@ function App() {
     return result;
   }
 
-  function checkDuplicates(area: SudokuRowColQuad) {
+  function checkDuplicates(area: SudokuRowColQuad): boolean {
     const valuesAlreadySeen = [];
 
     for (let i = 0; i < area.length; i++) {
@@ -63,12 +63,12 @@ function App() {
     return false;
   }
 
-  function handleCheckGrid() {
-    setInvalidGrid(false)
-    for (let i = 1; i <= 9; i++) {
-      const quad: SudokuRowColQuad = getQuad(i);
-      const row: SudokuRowColQuad = getRow(i);
-      const col: SudokuRowColQuad = getCol(i);
+  function verifyGrid(testGrid: SudokuGridArray = grid): boolean {
+    setInvalidGrid(false);
+    for (let i = 0; i < 9; i++) {
+      const quad: SudokuRowColQuad = getQuad(testGrid, i);
+      const row: SudokuRowColQuad = getRow(testGrid, i);
+      const col: SudokuRowColQuad = getCol(testGrid, i);
 
       if (
         checkDuplicates(row) ||
@@ -76,8 +76,64 @@ function App() {
         checkDuplicates(quad)
       ) {
         setInvalidGrid(true);
+        return false;
       }
     }
+    return true;
+  }
+
+  function getRandomNum(): number {
+    return Math.floor(Math.random() * 9) + 1;
+  }
+
+  function setCell(
+    grid: SudokuGridArray,
+    row: number,
+    col: number,
+    value: number
+  ) {
+    grid[row][col] = value.toString();
+  }
+
+  function getCandidates (grid: SudokuGridArray, row: number, col: number): number[] {
+    const result: number[] = []
+    const quadNumber: number = (Math.floor(col / 3) * 3) + Math.floor(row / 3)
+    const rowArr: SudokuRowColQuad = getRow(grid, row)
+    const colArr: SudokuRowColQuad = getCol(grid, col)
+    const quadArr: SudokuRowColQuad = getQuad(grid, quadNumber)
+    const appendedArr = rowArr.concat(colArr, quadArr)
+
+    
+    for (let i = 1; i < 10; i++) {
+      if(appendedArr.indexOf(i.toString()) === -1) {
+        result.push(i)
+      }
+    }
+
+    console.log(result)
+
+    return result
+  }
+
+  
+
+  function handleSolveGrid() {
+    const newGrid: SudokuGridArray = grid.map((row) => [...row]);
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+          const candidates: number[] = getCandidates(newGrid, i, j)
+          if (candidates.length === 0) {
+            console.log("Cell impossible")
+          }
+
+          setCell(newGrid, i, j, getRandomNum())
+      }
+    }
+    setGrid(newGrid);
+  }
+
+  function handleCheckGrid() {
+    verifyGrid();
   }
 
   return (
@@ -89,6 +145,7 @@ function App() {
         />
       </div>
       <button onClick={handleCheckGrid}>Check Grid</button>
+      <button onClick={handleSolveGrid}>Solve Grid</button>
       {invalidGrid && <p className="text-red-500">This Grid Has An Error</p>}
     </>
   );
