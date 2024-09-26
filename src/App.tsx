@@ -114,48 +114,43 @@ function App() {
 
   function handleSolveGrid() {
     const newGrid: SudokuGridArray = grid.map((row) => [...row]);
-  
+
     function solve(i: number, j: number): boolean {
-      console.log(i, j)
       if (i === 9) return true;
-      if (j === 9) return solve(i + 1, 0); 
-  
-      if (newGrid[i][j] !== "") return solve(i, j + 1); 
-  
+      if (j === 9) return solve(i + 1, 0);
+
+      if (newGrid[i][j] !== "") return solve(i, j + 1);
+
       const candidates: number[] = getCandidates(newGrid, i, j);
       for (const candidate of candidates) {
         setCell(newGrid, i, j, candidate);
-        
+
         if (verifyGrid(newGrid)) {
-          if (solve(i, j + 1)) return true; 
+          if (solve(i, j + 1)) return true;
         }
-  
-        setCell(newGrid, i, j, ""); 
+
+        setCell(newGrid, i, j, "");
       }
-  
-      return false; // Return false if no candidate works
+
+      return false;
     }
-  
+
     solve(0, 0);
     setGrid(newGrid);
   }
 
-  function handleCheckGrid() {
-    verifyGrid();
-  }
-
   return (
-    <>
-      <div className="text-red-500">
+    <main className="flex flex-col place-items-center gap-6">
+      <h1 className="text-3xl mt-4">Sudoku Solver</h1>
+      <div>
         <SudokoGridLayout
           sudokuGrid={grid}
           handleCellChange={handleCellChange}
         />
       </div>
-      <button onClick={handleCheckGrid}>Check Grid</button>
-      <button onClick={handleSolveGrid}>Solve Grid</button>
-      {invalidGrid && <p className="text-red-500">This Grid Has An Error</p>}
-    </>
+      <button onClick={handleSolveGrid} className="bg-slate-500 p-4 rounded-full text-white hover:bg-slate-400">Solve Grid</button>
+      {invalidGrid && <p className="text-red-500">This grid is invalid</p>}
+    </main>
   );
 }
 
