@@ -1,5 +1,6 @@
 {
   "name": "sudoku-solver",
+  "homepage": "https://mrstashy.github.io/sudoku-solver",
   "private": true,
   "version": "0.0.0",
   "type": "module",
