@@ -140,7 +140,7 @@ function App() {
   }
 
   return (
-    <main className="flex flex-col place-items-center gap-6">
+    <main className="flex flex-col place-items-center gap-6 h-screen">
       <h1 className="text-3xl mt-4">Sudoku Solver</h1>
       <div>
         <SudokoGridLayout
@@ -148,7 +148,7 @@ function App() {
           handleCellChange={handleCellChange}
         />
       </div>
-      <button onClick={handleSolveGrid} className="bg-slate-500 p-4 rounded-full text-white hover:bg-slate-400">Solve Grid</button>
+      <button onClick={handleSolveGrid} className="bg-slate-500 p-4 rounded-full text-white hover:bg-slate-400 shadow-xl hover:shadow-sm">Solve Grid</button>
       {invalidGrid && <p className="text-red-500">This grid is invalid</p>}
     </main>
   );
@@ -156,55 +156,3 @@ function App() {
 
 export default App;
 
-// function populateGridWithNumbers() {
-//   const newGrid: SudokuGridArray = grid.map((row) => [...row]);
-//   for (let i = 0; i < newGrid.length; i++) {
-//     for (let j = 0; j < newGrid[i].length; j++) {
-//       newGrid[i][j] = (i * 10 + (j - i + 1)).toString();
-//     }
-//   }
-//   setGrid(newGrid);
-// }
-
-// class SudokuGrid {
-//   private grid: SudokuGridArray;
-
-//   constructor() {
-//     this.grid = Array(9)
-//       .fill("")
-//       .map(() => Array(9).fill(""));
-//   }
-
-//   public getGrid(): SudokuGridArray {
-//     return this.grid.map((row) => [...row]);
-//   }
-
-//   public getCell(row: number, column: number): SudokuCell {
-//     return this.grid[row - 1][column - 1];
-//   }
-
-//   public getrow(number: number): SudokuRowColQuad {
-//     return this.grid[number - 1];
-//   }
-
-//   public getCol(number: number): SudokuRowColQuad {
-//     const colArr: SudokuCell[] = [];
-//     for (let i = 0; i < this.grid.length; i++) {
-//       colArr.push(this.grid[i][number - 1]);
-//     }
-//     return colArr;
-//   }
-
-//   public getQuad(number: number): SudokuRowColQuad {
-//     const startRow = Math.floor((number - 1) / 3) * 3;
-//     const startCol = ((number - 1) % 3) * 3;
-//     const result: SudokuCell[] = [];
-
-//     for (let i = 0; i < 3; i++) {
-//       for (let j = 0; j < 3; j++) {
-//         result.push(this.grid[startRow + i][startCol + j]);
-//       }
-//     }
-//     return result;
-//   }
-// }
