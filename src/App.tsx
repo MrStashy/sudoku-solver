@@ -35,8 +35,8 @@ function App() {
   }
 
   function getQuad(grid: SudokuGridArray, number: number): SudokuRowColQuad {
-    const startRow = Math.floor(number / 3) * 3; 
-    const startCol = (number % 3) * 3;   
+    const startRow = Math.floor(number / 3) * 3;
+    const startCol = (number % 3) * 3;
     const result: SudokuRowColQuad = [];
 
     for (let i = 0; i < 3; i++) {
@@ -82,53 +82,61 @@ function App() {
     return true;
   }
 
-  function getRandomNum(): number {
-    return Math.floor(Math.random() * 9) + 1;
-  }
-
   function setCell(
     grid: SudokuGridArray,
     row: number,
     col: number,
-    value: number
+    value: number | ""
   ) {
     grid[row][col] = value.toString();
   }
 
-  function getCandidates (grid: SudokuGridArray, row: number, col: number): number[] {
-    const result: number[] = []
-    const quadNumber: number = (Math.floor(col / 3) * 3) + Math.floor(row / 3)
-    const rowArr: SudokuRowColQuad = getRow(grid, row)
-    const colArr: SudokuRowColQuad = getCol(grid, col)
-    const quadArr: SudokuRowColQuad = getQuad(grid, quadNumber)
-    const appendedArr = rowArr.concat(colArr, quadArr)
+  function getCandidates(
+    grid: SudokuGridArray,
+    row: number,
+    col: number
+  ): number[] {
+    const result: number[] = [];
+    const quadNumber: number = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+    const rowArr: SudokuRowColQuad = getRow(grid, row);
+    const colArr: SudokuRowColQuad = getCol(grid, col);
+    const quadArr: SudokuRowColQuad = getQuad(grid, quadNumber);
+    const appendedArr = rowArr.concat(colArr, quadArr);
 
-    
     for (let i = 1; i < 10; i++) {
-      if(appendedArr.indexOf(i.toString()) === -1) {
-        result.push(i)
+      if (!appendedArr.includes(i.toString())) {
+        result.push(i);
       }
     }
 
-    console.log(result)
-
-    return result
+    return result;
   }
-
-  
 
   function handleSolveGrid() {
     const newGrid: SudokuGridArray = grid.map((row) => [...row]);
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-          const candidates: number[] = getCandidates(newGrid, i, j)
-          if (candidates.length === 0) {
-            console.log("Cell impossible")
-          }
-
-          setCell(newGrid, i, j, getRandomNum())
+  
+    function solve(i: number, j: number): boolean {
+      console.log(i, j)
+      if (i === 9) return true;
+      if (j === 9) return solve(i + 1, 0); 
+  
+      if (newGrid[i][j] !== "") return solve(i, j + 1); 
+  
+      const candidates: number[] = getCandidates(newGrid, i, j);
+      for (const candidate of candidates) {
+        setCell(newGrid, i, j, candidate);
+        
+        if (verifyGrid(newGrid)) {
+          if (solve(i, j + 1)) return true; 
+        }
+  
+        setCell(newGrid, i, j, ""); 
       }
+  
+      return false; // Return false if no candidate works
     }
+  
+    solve(0, 0);
     setGrid(newGrid);
   }
 
