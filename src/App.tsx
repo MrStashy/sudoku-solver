@@ -11,10 +11,11 @@ function App() {
   const [invalidGrid, setInvalidGrid] = useState<boolean>(false);
 
   function handleCellChange(e: React.ChangeEvent<HTMLInputElement>) {
+    console.log(e)
     const newGrid: SudokuGridArray = grid.map((row) => [...row]);
     const { id, value } = e.target;
-    const col = Number(id[0]) - 1;
-    const row = Number(id[2]) - 1;
+    const col = Number(id[0]);
+    const row = Number(id[2]);
 
     if (value === "" || /^[1-9]?$/.test(value)) {
       newGrid[col][row] = value === "" ? "" : value;

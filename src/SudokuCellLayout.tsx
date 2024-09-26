@@ -11,14 +11,13 @@ export default function SudokuCellLayout({number, rowIndex, colIndex, handleCell
 
     let style="h-14 w-14 grid text-center border"
 
-    if(colIndex === 3 || colIndex === 6) {
+    if(colIndex+1 === 3 || colIndex+1 === 6) {
         style += " border-r-4"
     } 
-    if (rowIndex === 3 || rowIndex === 6) {
+    if (rowIndex+1 === 3 || rowIndex+1 === 6) {
         style += " border-b-4"
     }
 
-    console.log(rowIndex, colIndex)
     return (
         <input id={`${rowIndex}-${colIndex}`} className={style} onChange={handleCellChange} value={number}/>
     )

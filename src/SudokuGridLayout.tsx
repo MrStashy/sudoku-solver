@@ -12,9 +12,9 @@ export default function SudokuGridLayout({
 }: SudokuGridLayoutProps) {
 
   return (
-    <div className="flex flex-col my-auto">
+    <div className="flex flex-col">
     {sudokuGrid.map((row, rowIndex) => {
-      return (<SudokuRowLayout key={rowIndex} handleCellChange={handleCellChange} row={row} rowIndex={rowIndex+1} />)
+      return (<SudokuRowLayout key={rowIndex} handleCellChange={handleCellChange} row={row} rowIndex={rowIndex} />)
     }
         
     )}
