@@ -141,8 +141,8 @@ function App() {
   }
 
   return (
-    <main className="flex flex-col place-items-center gap-6 h-screen">
-      <h1 className="text-3xl mt-4">Sudoku Solver</h1>
+    <main className="flex flex-col place-items-center gap-6 h-screen bg-black">
+      <h1 className="text-3xl mt-4 text-white">Sudoku Solver</h1>
       <div>
         <SudokoGridLayout
           sudokuGrid={grid}
