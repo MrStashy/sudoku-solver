@@ -142,14 +142,14 @@ function App() {
 
   return (
     <main className="flex flex-col place-items-center gap-6 h-screen bg-black">
-      <h1 className="text-3xl mt-4 text-white">Sudoku Solver</h1>
+      <h1 className="text-4xl mt-8 mb-4 font-bold bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient bg-300%">Sudoku Solver</h1>
       <div>
         <SudokoGridLayout
           sudokuGrid={grid}
           handleCellChange={handleCellChange}
         />
       </div>
-      <button onClick={handleSolveGrid} className="bg-slate-500 p-4 rounded-full text-white hover:bg-slate-400 shadow-xl hover:shadow-sm">Solve Grid</button>
+      <button onClick={handleSolveGrid} className="bg-slate-500 p-2 px-4 rounded-full text-white text-sm hover:bg-slate-400 border">Solve Grid</button>
       {invalidGrid && <p className="text-red-500">This grid is invalid</p>}
     </main>
   );
